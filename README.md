@@ -12,7 +12,10 @@ Link: https://data.cityofchicago.org/
       https://data.cityofchicago.org/browse?limitTo=datasets&utf8=%E2%9C%93&page=1
       
 Features Covered:
-I covered three main Areas of crime. 
+I covered three main Areas of crime.
+
 1) Snitching( including money, mobile, hand bags)
+
 2) Robery in rasidential areas.
+
 3) Narcotics (selling and purchasing)
