@@ -1,0 +1,108 @@
+package research.crime;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+
+
+public class CrimeReport {
+	private static int robbery1=0;
+	private static int robbery2=0;
+	private static int robberyStreetCrime1=0;
+	private static int robberyStreetCrime2=0;
+	private static int narcoticsCrime1=0;
+	private static int narcoticsCrime2=0;
+	public static void main(String[] args) {
+		String fileName = "C:\Users\noshi\Crime Comparision\resources\2001 Crime.xlsx";
+		
+		String retValue1=readFile();
+		System.out.println("----------------------------------------------------------");
+		//System.out.println("retun string "+retValue1);
+		String[] ret = retValue1.split(","); 
+		
+		robberyStreetCrime1 = Integer.parseInt(ret[0]);
+		robbery1 = Integer.parseInt(ret[1]);
+		narcoticsCrime1 = Integer.parseInt(ret[2]);
+		System.out.println("Crimes in Year 2001 \t Street crimes "+robberyStreetCrime1+ "  Robbery in Residential Area " + robbery1 + " Narcotics "+ narcoticsCrime1   );
+		fileName = "C:\Users\noshi\Crime Comparision\resources\2015 crime.xlsx";
+		retValue1=readFile(fileName);
+		//System.out.println("retun string "+retValue1);
+		String[] ret1 = retValue1.split(","); 
+		
+		robberyStreetCrime2 = Integer.parseInt(ret1[0]);
+		robbery2 = Integer.parseInt(ret1[1]);
+		narcoticsCrime2 = Integer.parseInt(ret1[2]);
+		System.out.println("Crimes in Year 2015 \t Street crimes "+robberyStreetCrime2+ "  Robbery in Residential Area " + robbery2 + " Narcotics "+ narcoticsCrime2   );
+		System.out.println("----------------------------------------------------------");
+	}
+	
+	public static String readFile(String fileName ){
+		 int roberCrime=0, RobberStreetCrime=0 ,  narcotics=0;
+		String retValue ="";
+		try {
+			FileInputStream file = new FileInputStream(new File(fileName));
+			//Get the workbook instance for XLS file
+			//HSSFWorkbook workbook = new HSSFWorkbook(file);
+			XSSFWorkbook xssfWorkBook  =new XSSFWorkbook(file) ;
+			//Get first sheet from the workbook
+			//HSSFSheet sheet = workbook.getSheetAt(0);
+			XSSFSheet sheetx = xssfWorkBook.getSheetAt(0);
+			//Iterate through each rows from first sheet
+			Iterator<Row> rowIterator = sheetx.iterator();
+			rowIterator.next();
+			String primaryType="";
+			String location = "";
+			while(rowIterator.hasNext()) {
+				Row row = rowIterator.next();
+				//For each row, iterate through each columns
+				Iterator<Cell> cellIterator = row.cellIterator();
+				//while(cellIterator.hasNext()) {
+					Cell primaryTypeCell = row.getCell(5);
+					Cell locationCell = row.getCell(7);
+					//switch(cell.getCellType()) {
+					primaryType = primaryTypeCell.getStringCellValue();
+					location = locationCell.getStringCellValue();
+					if(primaryType.equalsIgnoreCase("Narcotics")){
+						narcotics = narcotics  +1;
+					}
+					if((primaryType.equalsIgnoreCase("ROBBERY")) && (location.equalsIgnoreCase("RESIDENCE"))){
+						roberCrime = roberCrime  +1;
+					}
+					if((primaryType.equalsIgnoreCase("THEFT")) && (location.equalsIgnoreCase("STREET"))){
+						RobberStreetCrime = RobberStreetCrime  +1;
+					}		
+						
+					//}
+				//}
+				
+			}
+			retValue =RobberStreetCrime+","+roberCrime+","+narcotics;
+//			System.out.println("Street crimes "+RobberStreetCrime+ "  Robbery in Residential Area " + roberCrime + " Narcotics "+ narcotics   );
+			file.close();
+//			FileOutputStream out =
+//				new FileOutputStream(new File("C:\\test.xls"));
+//			workbook.write(out);
+//			out.close();
+		} catch (FileNotFoundException e) 
+			{
+				e.printStackTrace(); 
+			} 
+		catch (IOException e) 
+			{ 
+			e.printStackTrace(); 
+			}	 
+		return retValue;
+	}
+	
+}
