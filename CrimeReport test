@@ -1,0 +1,28 @@
+package opensourceCrime;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import org.junit.BeforeClass;
+ import org.junit.AfterClass;
+
+
+
+public class CrimeReport {
+
+@Test
+	public void
+	
+		 setUp() throws Exception {
+	CrimeRepoort = New CrimeReport;
+	
+	@Test
+	 	public void CrimeReport2001 () {
+	 		assert(CrimeReport);
+	 	
+	
+	 		@Test
+		 	public void CrimeReport2015 () {
+		 		assert(CrimeReport);
+		 	
