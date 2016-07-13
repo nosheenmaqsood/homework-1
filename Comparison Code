@@ -24,7 +24,7 @@ public class CrimeReport {
 	private static int narcoticsCrime1=0;
 	private static int narcoticsCrime2=0;
 	public static void main(String[] args) {
-		String fileName = "C:\Users\noshi\Crime Comparision\resources\2001 Crime.xlsx";
+		String fileName = "2001 Crime.xlsx";
 		
 		String retValue1=readFile();
 		System.out.println("----------------------------------------------------------");
@@ -48,52 +48,56 @@ public class CrimeReport {
 	}
 	
 	public static String readFile(String fileName ){
-		 int roberCrime=0, RobberStreetCrime=0 ,  narcotics=0;
+		
+		int roberCrime=0, RobberStreetCrime=0 ,  narcotics=0;
 		String retValue ="";
+		String primaryType="";
+		String location = "";
+			
 		try {
 			FileInputStream file = new FileInputStream(new File(fileName));
+			
 			//Get the workbook instance for XLS file
-			//HSSFWorkbook workbook = new HSSFWorkbook(file);
 			XSSFWorkbook xssfWorkBook  =new XSSFWorkbook(file) ;
+			
 			//Get first sheet from the workbook
-			//HSSFSheet sheet = workbook.getSheetAt(0);
 			XSSFSheet sheetx = xssfWorkBook.getSheetAt(0);
+			
 			//Iterate through each rows from first sheet
 			Iterator<Row> rowIterator = sheetx.iterator();
+			
 			rowIterator.next();
-			String primaryType="";
-			String location = "";
-			while(rowIterator.hasNext()) {
+
+			while(rowIterator.hasNext()) 
+			{
 				Row row = rowIterator.next();
+				
 				//For each row, iterate through each columns
 				Iterator<Cell> cellIterator = row.cellIterator();
-				//while(cellIterator.hasNext()) {
+				
 					Cell primaryTypeCell = row.getCell(5);
 					Cell locationCell = row.getCell(7);
-					//switch(cell.getCellType()) {
+					
 					primaryType = primaryTypeCell.getStringCellValue();
 					location = locationCell.getStringCellValue();
+					
 					if(primaryType.equalsIgnoreCase("Narcotics")){
-						narcotics = narcotics  +1;
+						narcotics = narcotics  + 1;
 					}
+					
 					if((primaryType.equalsIgnoreCase("ROBBERY")) && (location.equalsIgnoreCase("RESIDENCE"))){
-						roberCrime = roberCrime  +1;
+						roberCrime = roberCrime  + 1;
 					}
+					
 					if((primaryType.equalsIgnoreCase("THEFT")) && (location.equalsIgnoreCase("STREET"))){
 						RobberStreetCrime = RobberStreetCrime  +1;
 					}		
-						
-					//}
-				//}
-				
+					
 			}
+			
 			retValue =RobberStreetCrime+","+roberCrime+","+narcotics;
-//			System.out.println("Street crimes "+RobberStreetCrime+ "  Robbery in Residential Area " + roberCrime + " Narcotics "+ narcotics   );
 			file.close();
-//			FileOutputStream out =
-//				new FileOutputStream(new File("C:\\test.xls"));
-//			workbook.write(out);
-//			out.close();
+
 		} catch (FileNotFoundException e) 
 			{
 				e.printStackTrace(); 
