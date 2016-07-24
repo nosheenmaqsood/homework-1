@@ -1,0 +1,139 @@
+package crime.com.crime;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+
+    TextView tvTheft2001, tvTheft2015, tvTheftChange, tvRobbery2001, tvRobbery2015, tvRobberyChange, tvNarcotics2001, tvNarcotics2015, tvNarcoticsChange,
+            tvAssault2001, tvAssault2015, tvAssaultChange;
+    Button btnCalculate;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        btnCalculate = (Button) findViewById(R.id.btnCalculate);
+        tvTheft2001 = (TextView) findViewById(R.id.tvTheft2001);
+        tvTheft2015 = (TextView) findViewById(R.id.tvTheft2015);
+        tvTheftChange = (TextView) findViewById(R.id.tvTheftChange);
+        tvRobbery2001 = (TextView) findViewById(R.id.tvRobbery2001);
+        tvRobbery2015 = (TextView) findViewById(R.id.tvRobbery2015);
+        tvRobberyChange = (TextView) findViewById(R.id.tvRobberyChange);
+        tvNarcotics2001 = (TextView) findViewById(R.id.tvNarcotics2001);
+        tvNarcotics2015 = (TextView) findViewById(R.id.tvNarcotics2015);
+        tvNarcoticsChange = (TextView) findViewById(R.id.tvNarcoticsChange);
+        tvAssault2001 = (TextView) findViewById(R.id.tvAssault2001);
+        tvAssault2015 = (TextView) findViewById(R.id.tvAssault2015);
+        tvAssaultChange = (TextView) findViewById(R.id.tvAssaultChange);
+
+
+        btnCalculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InputStream inputStream2001 = getResources().openRawResource(R.raw.db2001);
+                CSVFile csvFile2001 = new CSVFile(inputStream2001);
+                List<Crime> crimes2001 = csvFile2001.read();
+
+                InputStream inputStream2015 = getResources().openRawResource(R.raw.db2015);
+                CSVFile csvFile2015 = new CSVFile(inputStream2015);
+                List<Crime> crimes2015 = csvFile2015.read();
+
+
+                int theft2001 = 0;
+                int theft2015 = 0;
+                String theftChange = "";
+                int robbery2001 = 0;
+                int robbery2015 = 0;
+                String robberyChange = "";
+                int narcotics2001 = 0;
+                int narcotics2015 = 0;
+                String narcoticsChange ="";
+                int assault2001 = 0;
+                int assault2015 = 0;
+                String assaultChange = "";
+
+                for (int i = 0; i < crimes2001.size(); i++) {
+                    if (crimes2001.get(i).getPrimaryType().equalsIgnoreCase("THEFT")) {
+                        theft2001++;
+                    }
+                    if (crimes2001.get(i).getPrimaryType().equalsIgnoreCase("NARCOTICS")) {
+                        narcotics2001++;
+                    }
+                    if (crimes2001.get(i).getPrimaryType().equalsIgnoreCase("ROBBERY")) {
+                        robbery2001++;
+                    }
+                    if (crimes2001.get(i).getPrimaryType().equalsIgnoreCase("ASSAULT")) {
+                        assault2001++;
+                    }
+                }
+
+                for (int i = 0; i < crimes2015.size(); i++) {
+                    if (crimes2015.get(i).getPrimaryType().equalsIgnoreCase("THEFT")) {
+                        theft2015++;
+                    }
+                    if (crimes2015.get(i).getPrimaryType().equalsIgnoreCase("NARCOTICS")) {
+                        narcotics2015++;
+                    }
+                    if (crimes2015.get(i).getPrimaryType().equalsIgnoreCase("ROBBERY")) {
+                        robbery2015++;
+                    }
+                    if (crimes2015.get(i).getPrimaryType().equalsIgnoreCase("ASSAULT")) {
+                        assault2015++;
+                    }
+                }
+
+
+                theftChange = percentageCalculateFunction(theft2001, theft2015);
+                robberyChange = percentageCalculateFunction(robbery2001, robbery2015) ;
+                narcoticsChange = percentageCalculateFunction(narcotics2001, narcotics2015);
+                assaultChange =  percentageCalculateFunction(assault2001, assault2015);
+
+
+                tvTheft2001.setText(theft2001+"");
+                tvTheft2015.setText(theft2015+"");
+                tvTheftChange.setText(theftChange+"%");
+
+                tvRobbery2001.setText(robbery2001+"");
+                tvRobbery2015.setText(robbery2015+"");
+                tvRobberyChange.setText(robberyChange+"%");
+
+                tvNarcotics2001.setText(narcotics2001+"");
+                tvNarcotics2015.setText(narcotics2015+"");
+                tvNarcoticsChange.setText(narcoticsChange+"%");
+
+                tvAssault2001.setText(assault2001+"");
+                tvAssault2015.setText(assault2015+"");
+                tvAssaultChange.setText(assaultChange+"%");
+
+
+
+            }
+        });
+
+    }
+
+
+    private String percentageCalculateFunction(double startVal, double endVal)
+    {
+        double result =0.00;
+
+        double subTract = endVal-startVal;
+        double  division = subTract/startVal;
+        result = division *100;
+        DecimalFormat df = new DecimalFormat("0.##");
+        String percentage = df.format(result);
+        return  percentage;
+    }
+}
