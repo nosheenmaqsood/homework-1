@@ -1,0 +1,107 @@
+package crime.com.crime;
+
+import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.TextView;
+
+import org.junit.Test;
+
+
+public class TextCase extends
+        ActivityInstrumentationTestCase2<MainActivity> {
+
+
+    Button btnCalculate;
+    MainActivity activity;
+    TextView tvTheft2001, tvTheft2015, tvTheftChange, tvRobbery2001, tvRobbery2015, tvRobberyChange, tvNarcotics2001, tvNarcotics2015, tvNarcoticsChange,
+            tvAssault2001, tvAssault2015, tvAssaultChange;
+
+    public TextCase() {
+        super("crime.com.crime", MainActivity.class);
+    }
+
+
+    @Test
+    protected void setUp() throws Exception {
+        super.setUp();
+        setActivityInitialTouchMode(false);
+        activity = this.getActivity();
+
+        tvTheft2001 = (TextView) activity.findViewById(crime.com.crime.R.id.tvTheft2001);
+        tvTheft2015 = (TextView) activity.findViewById(crime.com.crime.R.id.tvTheft2015);
+        tvTheftChange = (TextView) activity.findViewById(crime.com.crime.R.id.tvTheftChange);
+        tvRobbery2001 = (TextView) activity.findViewById(crime.com.crime.R.id.tvRobbery2001);
+        tvRobbery2015 = (TextView) activity.findViewById(crime.com.crime.R.id.tvRobbery2015);
+        tvRobberyChange = (TextView) activity.findViewById(crime.com.crime.R.id.tvRobberyChange);
+        tvNarcotics2001 = (TextView) activity.findViewById(crime.com.crime.R.id.tvNarcotics2001);
+        tvNarcotics2015 = (TextView) activity.findViewById(crime.com.crime.R.id.tvNarcotics2015);
+        tvNarcoticsChange = (TextView) activity.findViewById(crime.com.crime.R.id.tvNarcoticsChange);
+        tvAssault2001 = (TextView) activity.findViewById(crime.com.crime.R.id.tvAssault2001);
+        tvAssault2015 = (TextView) activity.findViewById(crime.com.crime.R.id.tvAssault2015);
+        tvAssaultChange = (TextView) activity.findViewById(crime.com.crime.R.id.tvAssaultChange);
+        btnCalculate = (Button) activity.findViewById(crime.com.crime.R.id.btnCalculate);
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                tvTheft2001.setText("");
+                tvTheft2015.setText("");
+                tvTheftChange.setText("");
+                tvRobbery2001.setText("");
+                tvRobbery2015.setText("");
+                tvRobberyChange.setText("");
+                tvNarcotics2001.setText("");
+                tvNarcotics2015.setText("");
+                tvNarcoticsChange.setText("");
+                tvAssault2001.setText("");
+                tvAssault2015.setText("");
+                tvAssaultChange.setText("");
+                btnCalculate.performClick();
+            }
+        });
+
+    }
+
+    public void testPreconditions() {
+        assertNotNull(btnCalculate);
+        assertNotNull(tvTheft2001);
+        assertNotNull(tvTheft2015);
+        assertNotNull(tvTheftChange);
+        assertNotNull(tvRobbery2001);
+        assertNotNull(tvRobbery2015);
+        assertNotNull(tvRobberyChange);
+        assertNotNull(tvNarcotics2001);
+        assertNotNull(tvNarcotics2015);
+        assertNotNull(tvNarcoticsChange);
+        assertNotNull(tvAssault2001);
+        assertNotNull(tvAssault2015);
+        assertNotNull(tvAssaultChange);
+    }
+
+    public void testText() {
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                assertEquals("50", (String) tvTheft2001.getText());
+                assertEquals("6", (String) tvTheft2015.getText());
+                assertEquals("-88%", (String) tvTheftChange.getText());
+
+                assertEquals("7", (String) tvRobbery2001.getText());
+                assertEquals("3", (String) tvRobbery2015.getText());
+                assertEquals("-57.14%", (String) tvRobberyChange.getText());
+
+                assertEquals("76", (String) tvNarcotics2001.getText());
+                assertEquals("227", (String) tvNarcotics2015.getText());
+                assertEquals("198.68%", (String) tvNarcoticsChange.getText());
+
+                assertEquals("15", (String) tvAssault2001.getText());
+                assertEquals("3", (String) tvAssault2015.getText());
+                assertEquals("-80%", (String) tvAssaultChange.getText());
+            }
+        });
+
+    }
+
+}
